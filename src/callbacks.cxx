@@ -13,7 +13,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     (void)scancode;
     (void)mods;
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 }
 

@@ -22,11 +22,19 @@ int main(void) {
 
     GLFWwindow *window =
         glfwCreateWindow(WIDTH, HEIGHT, "spark", nullptr, nullptr);
-    glViewport(0, 0, WIDTH, HEIGHT);
+    if (!window) {
+        std::cerr << "[Error] Failed to create window\n";
+        glfwTerminate();
+        return -1;
+    }
 
     glfwMakeContextCurrent(window);
 
+    glViewport(0, 0, WIDTH, HEIGHT);
+
     window_set_all_callbacks(window);
+
+    double time = glfwGetTime();
 
     glClearColor(1.0f, 0.5f, 1.0f, 1.0f);
     while (!glfwWindowShouldClose(window)) {
