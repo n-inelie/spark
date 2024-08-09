@@ -80,7 +80,11 @@ int main(void) {
     }
 
     glDeleteVertexArrays(1, &VAO);
+
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+
+    shader.deleteProgram();
 
     glfwDestroyWindow(window);
     glfwTerminate();

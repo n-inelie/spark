@@ -61,6 +61,8 @@ class Shader {
 
     void use() { glUseProgram(ID); }
 
+    void deleteProgram() { glDeleteProgram(ID); }
+
   private:
     void checkCompileErrors(unsigned int shader, std::string type) {
         int success;
