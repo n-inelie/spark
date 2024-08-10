@@ -4,6 +4,9 @@
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include "callbacks.hxx"
 #include "shader.hxx"
 #include "spark-utils.hxx"
@@ -12,11 +15,11 @@
 #define HEIGHT 500
 
 float vertices[] = {
-    -0.5, -0.5, 0.0, 1.0f, 0.0f, 1.0f, // bottom left
-    0.5,  -0.5, 0.0, 1.0f, 0.0f, 1.0f, // bottom right
-    0.5,  0.5,  0.0, 1.0f, 0.0f, 1.0f, // top right
-    -0.5, 0.5,  0.0, 1.0f, 0.0f, 1.0f, // top left
-    0.0,  0.0,  0.0, 1.0f, 0.0f, 0.0f, // centre
+    -0.5, -0.5, 0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
+    0.5,  -0.5, 0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
+    0.5,  0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // top right
+    -0.5, 0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // top left
+    0.0,  0.0,  0.0, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // centre
 };
 
 unsigned int indices[] = {
@@ -44,6 +47,30 @@ int main(void) {
 
     Shader shader("shaders/basic.vert.glsl", "shaders/basic.frag.glsl");
 
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                    GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    int texture_width, texture_height, nrChannels;
+    unsigned char *data = stbi_load("textures/sample1.jpg", &texture_width,
+                                    &texture_height, &nrChannels, 0);
+
+    if (!data) {
+        std::cout << "Failed to load texture" << std::endl;
+    } else {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0,
+                     GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    stbi_image_free(data);
+
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -59,12 +86,15 @@ int main(void) {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                  GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void *)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                          (void *)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     while (!glfwWindowShouldClose(window)) {
