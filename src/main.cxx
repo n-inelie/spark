@@ -16,15 +16,15 @@
 
 float vertices[] = {
     -0.5, -0.5, 0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-    0.5,  -0.5, 0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
-    0.5,  0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // top right
-    -0.5, 0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // top left
+    0.5,  -0.5, 0.0, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, // bottom right
+    0.5,  0.5,  0.0, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // top right
+    -0.5, 0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, // top left
     0.0,  0.0,  0.0, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // centre
 };
 
 unsigned int indices[] = {
-    3, 4, 2, // first triangle
-    0, 1, 4, // second triangle
+    0, 1, 2, // first triangle
+    0, 2, 3, // second triangle
 };
 
 int main(void) {
@@ -46,31 +46,6 @@ int main(void) {
     window_set_all_callbacks(window);
 
     Shader shader("shaders/basic.vert.glsl", "shaders/basic.frag.glsl");
-
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                    GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    int texture_width, texture_height, nrChannels;
-    unsigned char *data = stbi_load("textures/sample1.jpg", &texture_width,
-                                    &texture_height, &nrChannels, 0);
-
-    if (!data) {
-        std::cout << "Failed to load texture" << std::endl;
-    } else {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0,
-                     GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-
-    stbi_image_free(data);
-
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -96,13 +71,41 @@ int main(void) {
                           (void *)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                    GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+
+    int texture_width, texture_height, nrChannels;
+    unsigned char *data = stbi_load("textures/sample1.jpg", &texture_width,
+                                    &texture_height, &nrChannels, 0);
+
+    if (!data) {
+        std::cout << "Failed to load texture" << std::endl;
+    } else {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0,
+                     GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    stbi_image_free(data);
+
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
         shader.use();
         glBindVertexArray(VAO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
