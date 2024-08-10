@@ -16,9 +16,9 @@
 
 float vertices[] = {
     -0.5, -0.5, 0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-    0.5,  -0.5, 0.0, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, // bottom right
-    0.5,  0.5,  0.0, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, // top right
-    -0.5, 0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, // top left
+    0.5,  -0.5, 0.0, 1.0f, 0.0f, 1.0f, 2.0f, 0.0f, // bottom right
+    0.5,  0.5,  0.0, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, // top right
+    -0.5, 0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 2.0f, // top left
     0.0,  0.0,  0.0, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // centre
 };
 
@@ -75,7 +75,7 @@ int main(void) {
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
                     GL_LINEAR_MIPMAP_LINEAR);
@@ -84,7 +84,7 @@ int main(void) {
     stbi_set_flip_vertically_on_load(true);
 
     int texture_width, texture_height, nrChannels;
-    unsigned char *data = stbi_load("textures/sample2.jpg", &texture_width,
+    unsigned char *data = stbi_load("textures/sample1.jpg", &texture_width,
                                     &texture_height, &nrChannels, 0);
 
     if (!data) {
