@@ -84,7 +84,7 @@ int main(void) {
     stbi_set_flip_vertically_on_load(true);
 
     int texture_width, texture_height, nrChannels;
-    unsigned char *data = stbi_load("textures/sample1.jpg", &texture_width,
+    unsigned char *data = stbi_load("textures/sample2.jpg", &texture_width,
                                     &texture_height, &nrChannels, 0);
 
     if (!data) {

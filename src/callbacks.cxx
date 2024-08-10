@@ -1,7 +1,8 @@
-#include "callbacks.hxx"
 #include <iostream>
 
 #include <GLFW/glfw3.h>
+
+#include "callbacks.hxx"
 
 void window_set_all_callbacks(GLFWwindow *window) {
     glfwSetWindowCloseCallback(window, window_close_callback);
@@ -12,8 +13,14 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods) {
     (void)scancode;
     (void)mods;
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    if (action == GLFW_PRESS) {
+        switch (key) {
+        case GLFW_KEY_ESCAPE:
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
+            break;
+        default:
+            break;
+        }
     }
 }
 
