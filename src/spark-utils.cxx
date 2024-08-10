@@ -2,9 +2,6 @@
 
 #include "spark-utils.hxx"
 
-#define WIDTH 800
-#define HEIGHT 500
-
 void set_spark_glfw_hints() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
