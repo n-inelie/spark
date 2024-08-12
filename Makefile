@@ -1,5 +1,5 @@
 CXX_C := clang++
-CXX_FLAGS := -Wall -Wextra -Werror -Wpedantic -std=c++17 -Iinclude
+CXX_FLAGS := -Wall -Wextra -Werror -Wpedantic -std=c++20 -Iinclude
 DEBUG_FLAGS := -glldb
 RELEASE_FLAGS := -O3
 LINK_FLAGS := -lm -lglfw -lGL -fuse-ld=mold

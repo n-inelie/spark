@@ -12,10 +12,10 @@
 #include "spark-utils.hxx"
 
 float vertices[] = {
-    -0.5, -0.5, 0.0, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-    0.5,  -0.5, 0.0, 1.0f, 0.0f, 1.0f, 2.0f, 0.0f, // bottom right
-    0.5,  0.5,  0.0, 1.0f, 0.0f, 1.0f, 2.0f, 2.0f, // top right
-    -0.5, 0.5,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 2.0f, // top left
+    -1.0, -1.0, 0.0, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom left
+    1.0,  -1.0, 0.0, 1.0f, 0.0f, 1.0f, 4.0f, 0.0f, // bottom right
+    1.0,  1.0,  0.0, 1.0f, 0.0f, 0.0f, 4.0f, 4.0f, // top right
+    -1.0, 1.0,  0.0, 1.0f, 0.0f, 1.0f, 0.0f, 4.0f, // top left
     0.0,  0.0,  0.0, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // centre
 };
 
@@ -113,8 +113,8 @@ int main(void) {
     if (!data) {
         std::cout << "Failed to load texture" << std::endl;
     } else {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0,
-                     GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture_width, texture_height,
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 

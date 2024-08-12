@@ -2,8 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
-#define WIDTH 800 * 1.4
-#define HEIGHT 500 * 1.4
+constexpr uint32_t WIDTH = 800 * 1.4;
+constexpr uint32_t HEIGHT = 500 * 1.4;
 
 void set_spark_glfw_hints();
 
